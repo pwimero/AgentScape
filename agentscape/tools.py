@@ -4,7 +4,9 @@ import ipaddress
 import json
 import os
 import queue
+import secrets
 import signal
+import stat
 import subprocess
 import threading
 import time
@@ -100,6 +102,70 @@ class Tools:
         if not target.is_relative_to(self.workspace):
             raise ValueError("File path must stay inside the workspace.")
         return target
+
+    def _write(self, target, content):
+        # Resolve neither directory links nor the destination at mutation time.
+        # dir_fd keeps traversal anchored even if another worker swaps a path.
+        parts = target.relative_to(self.workspace).parts
+        if not parts:
+            raise ValueError("Choose a file inside the workspace.")
+        flags = os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW
+        directory = os.open(self.workspace, flags)
+        temporary = None
+        try:
+            for part in parts[:-1]:
+                try:
+                    os.mkdir(part, dir_fd=directory)
+                except FileExistsError:
+                    pass
+                child = os.open(part, flags, dir_fd=directory)
+                os.close(directory)
+                directory = child
+            mode = 0o600
+            try:
+                existing = os.stat(parts[-1], dir_fd=directory, follow_symlinks=False)
+                if stat.S_ISREG(existing.st_mode):
+                    mode = stat.S_IMODE(existing.st_mode) & 0o777
+            except FileNotFoundError:
+                pass
+            candidate = ".agentscape-write-" + secrets.token_hex(16)
+            descriptor = os.open(candidate, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW,
+                                 0o600, dir_fd=directory)
+            temporary = candidate
+            with os.fdopen(descriptor, "w", encoding="utf-8") as stream:
+                stream.write(content)
+                stream.flush()
+                os.fchmod(stream.fileno(), mode)
+            # Replacing the directory entry also avoids modifying a hard-linked
+            # outside file, and leaves the old file intact if writing fails.
+            os.replace(temporary, parts[-1], src_dir_fd=directory, dst_dir_fd=directory)
+            temporary = None
+        finally:
+            if temporary is not None:
+                try:
+                    os.unlink(temporary, dir_fd=directory)
+                except FileNotFoundError:
+                    pass
+            os.close(directory)
+
+    @staticmethod
+    def _stop_process_group(process):
+        # Reap the shell before checking the group: it may already have exited
+        # while children continue running with inherited output descriptors.
+        process.poll()
+        try:
+            os.killpg(process.pid, signal.SIGTERM)
+        except ProcessLookupError:
+            return False
+        deadline = time.monotonic() + 0.2
+        while time.monotonic() < deadline:
+            process.poll()
+            time.sleep(0.01)
+        try:
+            os.killpg(process.pid, signal.SIGKILL)
+        except ProcessLookupError:
+            pass
+        return True
 
     def allowed_url(self, url):
         parsed = urlparse(url)
@@ -205,20 +271,17 @@ class Tools:
                 while process.poll() is None:
                     if self.cancel.is_set() or time.monotonic() - start > timeout or raw_path.stat().st_size > 2_000_000:
                         stopped = "cancelled" if self.cancel.is_set() else "timeout or output limit reached"
-                        os.killpg(process.pid, signal.SIGTERM)
-                        try:
-                            process.wait(timeout=1)
-                        except subprocess.TimeoutExpired:
-                            os.killpg(process.pid, signal.SIGKILL)
                         break
                     time.sleep(0.05)
             finally:
-                if process.poll() is None:
-                    try:
-                        os.killpg(process.pid, signal.SIGKILL)
-                    except ProcessLookupError:
-                        pass
-                process.wait()
+                try:
+                    if self._stop_process_group(process) and not stopped:
+                        stopped = "Background processes were stopped after the shell exited."
+                finally:
+                    # Reap the direct child even if group cleanup itself fails.
+                    if process.poll() is None:
+                        process.kill()
+                    process.wait()
         if self.cancel.is_set():
             raise Cancelled("Cancelled during command execution.")
         with raw_path.open("rb") as stream:
@@ -265,8 +328,7 @@ class Tools:
                     self.event(agent, "approval", detail="write " + str(target))
                     if not self.gate.approve(agent, "write", f"{target}\n\n{content[:2000]}"):
                         raise ValueError("File write denied by permission policy.")
-                    target.parent.mkdir(parents=True, exist_ok=True)
-                    target.write_text(content)
+                    self._write(target, content)
                     raw = f"Wrote {len(content.encode())} bytes to {target.relative_to(self.workspace)}"
                 elif name == "result":
                     result_id_requested = args["id"]

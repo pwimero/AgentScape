@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import stat
 import tempfile
 import threading
 import time
@@ -168,6 +169,110 @@ class ToolTests(unittest.TestCase):
         (self.tools.workspace / "link").symlink_to(outside)
         self.assertFalse(self.tools.execute("one", "write", {"path": "link", "content": "overwrite"})["ok"])
         self.assertEqual(outside.read_text(), "secret")
+
+    def test_directory_swap_during_write_approval_cannot_escape(self):
+        folder = self.tools.workspace / "folder"
+        folder.mkdir()
+        outside = self.root / "outside"
+        outside.mkdir()
+        def swap(*args):
+            folder.rename(self.tools.workspace / "original")
+            folder.symlink_to(outside, target_is_directory=True)
+            return True
+        with patch.object(self.tools.gate, "approve", side_effect=swap):
+            result = self.tools.execute("one", "write", {"path": "folder/file.txt", "content": "escape"})
+        self.assertFalse(result["ok"])
+        self.assertFalse((outside / "file.txt").exists())
+
+    def test_workspace_swap_during_write_approval_cannot_escape(self):
+        outside = self.root / "outside"
+        outside.mkdir()
+        def swap(*args):
+            self.tools.workspace.rename(self.root / "original")
+            self.tools.workspace.symlink_to(outside, target_is_directory=True)
+            return True
+        with patch.object(self.tools.gate, "approve", side_effect=swap):
+            result = self.tools.execute("one", "write", {"path": "file.txt", "content": "escape"})
+        self.assertFalse(result["ok"])
+        self.assertFalse((outside / "file.txt").exists())
+
+    def test_atomic_write_does_not_modify_hard_linked_outside_file(self):
+        outside = self.root / "outside.txt"
+        outside.write_text("original")
+        (self.tools.workspace / "linked.txt").hardlink_to(outside)
+        result = self.tools.execute("one", "write", {"path": "linked.txt", "content": "replacement"})
+        self.assertTrue(result["ok"])
+        self.assertEqual(outside.read_text(), "original")
+        self.assertEqual((self.tools.workspace / "linked.txt").read_text(), "replacement")
+
+    def test_atomic_overwrite_preserves_executable_permissions(self):
+        target = self.tools.workspace / "script.sh"
+        target.write_text("original")
+        target.chmod(0o755)
+        result = self.tools.execute("one", "write", {"path": "script.sh", "content": "replacement"})
+        self.assertTrue(result["ok"])
+        self.assertEqual(stat.S_IMODE(target.stat().st_mode), 0o755)
+
+    def test_leaf_symlink_swap_during_approval_does_not_modify_outside(self):
+        target = self.tools.workspace / "file.txt"
+        target.write_text("original")
+        outside = self.root / "outside.txt"
+        outside.write_text("outside")
+        def swap(*args):
+            target.unlink()
+            target.symlink_to(outside)
+            return True
+        with patch.object(self.tools.gate, "approve", side_effect=swap):
+            result = self.tools.execute("one", "write", {"path": "file.txt", "content": "replacement"})
+        self.assertTrue(result["ok"])
+        self.assertEqual(outside.read_text(), "outside")
+        self.assertFalse(target.is_symlink())
+        self.assertEqual(target.read_text(), "replacement")
+
+    def test_failed_atomic_write_preserves_file_and_cleans_temporary(self):
+        target = self.tools.workspace / "file.txt"
+        target.write_text("original")
+        with patch("agentscape.tools.os.replace", side_effect=OSError("replace failed")):
+            result = self.tools.execute("one", "write", {"path": "file.txt", "content": "replacement"})
+        self.assertFalse(result["ok"])
+        self.assertEqual(target.read_text(), "original")
+        self.assertEqual(list(self.tools.workspace.iterdir()), [target])
+
+    def test_nested_write_creates_directories_and_utf8_content(self):
+        result = self.tools.execute("one", "write", {"path": "new/nested/file.txt", "content": "Hello 🌍"})
+        self.assertTrue(result["ok"])
+        self.assertEqual((self.tools.workspace / "new/nested/file.txt").read_text(), "Hello 🌍")
+
+    def test_background_job_is_stopped_even_when_it_ignores_sigterm(self):
+        result = self.tools.execute("one", "shell", {
+            "command": "(trap '' TERM; touch ready; sleep 0.7; touch late) & "
+                       "while [ ! -f ready ]; do sleep 0.01; done"})
+        self.assertFalse(result["ok"])
+        self.assertIn("Background processes", result["error"])
+        time.sleep(0.8)
+        self.assertFalse((self.tools.workspace / "late").exists())
+
+    def test_cancel_stops_descendants_when_shell_exits_on_sigterm(self):
+        result = []
+        errors = []
+        def execute():
+            try:
+                result.append(self.tools.execute("one", "shell", {
+                    "command": "(trap '' TERM; touch ready; sleep 0.7; touch late) & wait"}))
+            except Cancelled as exc:
+                errors.append(exc)
+        thread = threading.Thread(target=execute)
+        thread.start()
+        deadline = time.monotonic() + 2
+        while not (self.tools.workspace / "ready").exists() and time.monotonic() < deadline:
+            time.sleep(0.01)
+        self.assertTrue((self.tools.workspace / "ready").exists())
+        self.cancel.set()
+        thread.join(timeout=2)
+        self.assertFalse(thread.is_alive())
+        self.assertEqual(len(errors), 1)
+        time.sleep(0.8)
+        self.assertFalse((self.tools.workspace / "late").exists())
 
     def test_read_large_output_has_retrievable_evidence(self):
         self.tools.execute("one", "write", {"path": "big.txt", "content": "a" * 6000 + "END"})
