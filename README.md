@@ -199,16 +199,43 @@ Runs are saved under `.agentscape/runs/ID/`:
 
 - `report.md`: final report
 - `run.json`: task, configuration, agent reports, timings, warnings
-- `events.jsonl`: model responses, tool calls/results, state changes
+- `events.jsonl`: model responses, tool calls/results, state changes while running; compressed losslessly to `events.jsonl.gz` when the run finishes
 - `WORKER-messages.json`: each worker's final model history
 - `plan.json`: supervisor assignments, when available
 - `evidence/`: captured raw tool results
 
 `completed` means the workers returned final reports; it is not an independent guarantee that the task succeeded or that a finding is correct. `partial` preserves step-limit failures, worker errors, or supervisor fallback. Raw evidence should support any result you rely on.
 
+Only the latest 32 events are retained in RAM. Complete history stays on disk and `run.events` streams it on demand; the dashboard reads the cached tail. Archived logs are ordinary gzip JSONL (`gzip -dc PATH/events.jsonl.gz`). If archiving fails, the original journal is retained and the run metadata records a warning. This changes log storage, not model context or model precision.
+
 The benchmark runs arithmetic diagnostics, actual shell-tool smoke tests for both JSON and native protocols, and sequential/parallel teams with and without a supervisor. It reports wall time, tokens, model-load time, and end-of-case loaded-memory snapshots. It does not measure peak total memory or establish broad security-testing competence. See [benchmark notes](benchmarks/README.md) for the test on your current model.
 
 Configuration lives in `.agentscape/config.json`. To add your own team-wide prompt, create `.agentscape/SYSTEM.md` (the first 4000 characters are included in worker prompts). `AGENTSCAPE_HOME` can point at a separate state directory for another profile. `ollama_url` can point at another Ollama server.
+
+## Memory and performance
+
+Model residency defaults to the existing ten-minute keep-alive. To release models after the entire task finishes, while retaining them between tool steps:
+
+```sh
+agentscape run 'YOUR TASK' --unload-after-run
+# Or persist this policy:
+agentscape config set unload_after_run true
+# Revert to keeping the model warm between tasks:
+agentscape config set unload_after_run false
+```
+
+`agentscape config set keep_alive 120` changes the idle interval in seconds. `-1` retains the model indefinitely; `0` unloads it after each model request and can cause repeated loading within one task. Per-run override: `--keep-alive 120`. Unloading affects the shared Ollama server and may disrupt cache reuse for other clients; leave it disabled when sharing a server or optimizing repeated-task latency. It changes residency, not weight/cache precision.
+
+For local memory and latency diagnostics:
+
+```sh
+agentscape bench --workers 2 --repeats 2 --profile --output /tmp/agentscape-profile.json
+.venv/bin/python benchmarks/efficiency.py --output /tmp/agentscape-efficiency.json --live --residency
+```
+
+The profiler samples Python and local Ollama process-tree RSS every 0.5 seconds and records system swap before/after. RSS is not exact peak unified/GPU memory, can include shared pages more than once, and does not measure remote inference. Swap changes include all applications. Call metrics now include time to first content, local semaphore wait, prompt-processing time/rate, and generation rate. A tool-only response may have no first-content time. Profiling is opt-in and adds sampling overhead.
+
+The efficiency probe compares synthetic event retention and optionally tests a fixed local model prompt and alternating model-residency policies. The live probes unload the selected model; run them when other clients are idle. See [measured before/after results and limitations](benchmarks/efficiency.md). No inference backend, model weights, quantization, context policy, or server-wide settings are changed by these optimizations.
 
 ## Development
 

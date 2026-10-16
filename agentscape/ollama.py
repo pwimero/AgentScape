@@ -79,7 +79,7 @@ class Ollama:
         cancel = cancel or threading.Event()
         payload = {
             "model": model, "messages": messages, "stream": True,
-            "keep_alive": "10m", "think": config.thinking,
+            "keep_alive": config.keep_alive, "think": config.thinking,
             "options": {"num_ctx": config.context, "num_predict": config.max_tokens, "temperature": config.temperature},
         }
         if schema is not None:
@@ -89,7 +89,10 @@ class Ollama:
         start = time.monotonic()
         content, thinking, calls = [], [], []
         final = None
+        inference_start = None
+        first_content = None
         with self.slot(cancel):
+            inference_start = time.monotonic()
             if on_start:
                 on_start()
             try:
@@ -108,6 +111,8 @@ class Ollama:
                                 raise OllamaError(item["error"])
                             msg = item.get("message", {})
                             token = msg.get("content", "")
+                            if token and first_content is None:
+                                first_content = time.monotonic()
                             content.append(token)
                             thinking.append(msg.get("thinking", ""))
                             calls.extend(msg.get("tool_calls", []))
@@ -125,6 +130,8 @@ class Ollama:
         if any(thinking):
             final["message"]["thinking"] = "".join(thinking)
         final["wall_seconds"] = time.monotonic() - start
+        final["queue_seconds"] = inference_start - start
+        final["time_to_first_content_seconds"] = first_content - start if first_content is not None else None
         return final
 
 
@@ -136,4 +143,9 @@ def metrics(response):
         "output_tokens": response.get("eval_count", 0),
         "tokens_per_second": round(response.get("eval_count", 0) / seconds, 2) if seconds else 0,
         "load_seconds": round(response.get("load_duration", 0) / 1e9, 3),
+        "queue_seconds": round(response.get("queue_seconds", 0), 3),
+        "time_to_first_content_seconds": response.get("time_to_first_content_seconds"),
+        "prompt_seconds": round(response.get("prompt_eval_duration", 0) / 1e9, 6),
+        "prompt_tokens_per_second": (round(response.get("prompt_eval_count", 0) / (response["prompt_eval_duration"] / 1e9), 2)
+                                     if response.get("prompt_eval_duration", 0) > 0 else None),
     }

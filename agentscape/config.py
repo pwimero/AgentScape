@@ -42,6 +42,8 @@ class Config:
     request_timeout: int = 180
     scope: list[str] = field(default_factory=list)
     compact: bool = True
+    keep_alive: int = 600
+    unload_after_run: bool = False
     thinking: bool = False
     enabled_tools: list[str] = field(default_factory=lambda: ["shell", "fetch", "search", "read", "write"])
 
@@ -64,6 +66,10 @@ class Config:
             raise ValueError("Steps must be 1–100 and output tokens 64–8192.")
         if not 1 <= self.command_timeout <= 3600 or not 1 <= self.request_timeout <= 3600:
             raise ValueError("Timeouts must be 1–3600 seconds.")
+        if type(self.keep_alive) is not int or not -1 <= self.keep_alive <= 86400:
+            raise ValueError("Model keep-alive must be -1 (indefinite), 0, or up to 86400 seconds.")
+        if type(self.unload_after_run) is not bool:
+            raise ValueError("unload_after_run must be true or false.")
         if not self.model.strip():
             raise ValueError("A worker model is required.")
         names = [w.name for w in self.workers]

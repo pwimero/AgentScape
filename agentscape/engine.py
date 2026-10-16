@@ -10,6 +10,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from .config import Config, STATE
+from .events import EventJournal
 from .ollama import Cancelled, Ollama, metrics
 from .routing import VOICE, choose_route, public_answer
 from .tools import DESCRIPTIONS, Gate, Tools, action_schema, native_tools
@@ -41,7 +42,9 @@ class Run:
                        for w in config.workers}
         if config.supervisor:
             self.states["supervisor"] = {"model": config.supervisor, "status": "waiting", "step": 0, "tokens": 0, "detail": ""}
-        self.events, self.calls, self.reports = [], [], []
+        self.events = EventJournal(self.directory)
+        self.calls, self.reports = [], []
+        self.used_models = set()
         self.answer, self.error, self.status = "", "", "running"
         self.warnings = []
         self.active_workers = list(config.workers)
@@ -56,8 +59,6 @@ class Run:
         entry = {"time": round(time.monotonic() - self.started, 3), "agent": agent, "kind": kind, **data}
         with self.lock:
             self.events.append(entry)
-            with (self.directory / "events.jsonl").open("a") as output:
-                output.write(json.dumps(entry, ensure_ascii=False) + "\n")
             if agent in self.states:
                 if kind in {"inference", "queued", "approval", "tool", "done", "error", "cancelled", "limit", "skipped"}:
                     self.states[agent]["status"] = kind
@@ -88,6 +89,7 @@ class Run:
 
     def chat(self, agent, model, messages, **kwargs):
         self.event(agent, "queued", detail="waiting for inference slot")
+        self.used_models.add(model)
         response = self.client.chat(model, messages, self.config, cancel=self.cancel,
                                     on_start=lambda: self.event(agent, "inference", detail="generating"), **kwargs)
         self.event(agent, "response", metrics=metrics(response), message=response["message"],
@@ -306,7 +308,21 @@ class Run:
             self.answer = "I couldn't complete the request. Details and any completed evidence are saved in the run folder."
         finally:
             try:
+                if self.config.unload_after_run:
+                    for model in sorted(self.used_models):
+                        try:
+                            self.client.unload(model)
+                            self.event("system", "unload", detail=model)
+                        except Exception as exc:
+                            self.warnings.append(f"Could not unload {model}: {exc}")
+                            self.event("system", "unload_error", detail=str(exc))
                 self._persist()
+                try:
+                    self.events.archive()
+                except OSError as exc:
+                    # The original journal remains readable if compression fails.
+                    self.warnings.append(f"Event archive failed; original retained: {exc}")
+                    self._persist()
             finally:
                 self.done.set()
 

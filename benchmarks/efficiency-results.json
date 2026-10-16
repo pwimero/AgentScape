@@ -1,0 +1,672 @@
+{
+  "date": "2026-10-16",
+  "host": {
+    "chip": "Apple M2 Pro",
+    "memory_gb": 16,
+    "python": "3.14.6"
+  },
+  "baseline_revision": "6d872dec944d031c27b324d3c4e84cc386d87ddf",
+  "implementation_engine_sha256": "2b80b9189174830bc983f2af8e842eca34eca8f3dd59f0672bb8845a202af062",
+  "event_trials": [
+    {
+      "variant": "before",
+      "repetition": 0,
+      "events": 5000,
+      "payload_characters": 8192,
+      "retained_python_bytes": 42312140,
+      "peak_python_bytes": 42463487,
+      "write_seconds": 0.7085514579666778,
+      "source_bytes": 41339434,
+      "stored_bytes": 41339434,
+      "archive_seconds": null,
+      "all_payloads_preserved": true,
+      "note": "Synthetic repetitive payloads test retention and lossless round-trip; compression ratio is not representative of arbitrary tool output."
+    },
+    {
+      "variant": "after",
+      "repetition": 0,
+      "events": 5000,
+      "payload_characters": 8192,
+      "retained_python_bytes": 277650,
+      "peak_python_bytes": 434467,
+      "write_seconds": 0.5324250420089811,
+      "source_bytes": 41339464,
+      "stored_bytes": 230715,
+      "archive_seconds": 0.0655280000064522,
+      "all_payloads_preserved": true,
+      "note": "Synthetic repetitive payloads test retention and lossless round-trip; compression ratio is not representative of arbitrary tool output."
+    },
+    {
+      "variant": "before",
+      "repetition": 1,
+      "events": 5000,
+      "payload_characters": 8192,
+      "retained_python_bytes": 42312258,
+      "peak_python_bytes": 42463605,
+      "write_seconds": 0.7156994580291212,
+      "source_bytes": 41339451,
+      "stored_bytes": 41339451,
+      "archive_seconds": null,
+      "all_payloads_preserved": true,
+      "note": "Synthetic repetitive payloads test retention and lossless round-trip; compression ratio is not representative of arbitrary tool output."
+    },
+    {
+      "variant": "after",
+      "repetition": 1,
+      "events": 5000,
+      "payload_characters": 8192,
+      "retained_python_bytes": 277886,
+      "peak_python_bytes": 434703,
+      "write_seconds": 0.5692210419801995,
+      "source_bytes": 41339464,
+      "stored_bytes": 232161,
+      "archive_seconds": 0.05753591703251004,
+      "all_payloads_preserved": true,
+      "note": "Synthetic repetitive payloads test retention and lossless round-trip; compression ratio is not representative of arbitrary tool output."
+    },
+    {
+      "variant": "before",
+      "repetition": 2,
+      "events": 5000,
+      "payload_characters": 8192,
+      "retained_python_bytes": 42313556,
+      "peak_python_bytes": 42464903,
+      "write_seconds": 0.6450144159607589,
+      "source_bytes": 41339453,
+      "stored_bytes": 41339453,
+      "archive_seconds": null,
+      "all_payloads_preserved": true,
+      "note": "Synthetic repetitive payloads test retention and lossless round-trip; compression ratio is not representative of arbitrary tool output."
+    },
+    {
+      "variant": "after",
+      "repetition": 2,
+      "events": 5000,
+      "payload_characters": 8192,
+      "retained_python_bytes": 277709,
+      "peak_python_bytes": 434526,
+      "write_seconds": 0.5401061669690534,
+      "source_bytes": 41339451,
+      "stored_bytes": 231437,
+      "archive_seconds": 0.05640591704286635,
+      "all_payloads_preserved": true,
+      "note": "Synthetic repetitive payloads test retention and lossless round-trip; compression ratio is not representative of arbitrary tool output."
+    }
+  ],
+  "final_probe": {
+    "revision": "6d872dec944d031c27b324d3c4e84cc386d87ddf",
+    "platform": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
+    "python": "3.14.6",
+    "engine_sha256": "2b80b9189174830bc983f2af8e842eca34eca8f3dd59f0672bb8845a202af062",
+    "events": {
+      "events": 5000,
+      "payload_characters": 8192,
+      "retained_python_bytes": 277650,
+      "peak_python_bytes": 434467,
+      "write_seconds": 0.5464862498920411,
+      "source_bytes": 41339470,
+      "stored_bytes": 231668,
+      "archive_seconds": 0.05733862507622689,
+      "all_payloads_preserved": true,
+      "note": "Synthetic repetitive payloads test retention and lossless round-trip; compression ratio is not representative of arbitrary tool output."
+    },
+    "live": {
+      "server_version": "0.40.5",
+      "model": "hf.co/HauhauCS/Qwen3.5-4B-Uncensored-HauhauCS-Aggressive:Q4_K_M",
+      "context": 4096,
+      "rows": [
+        {
+          "phase": "cold",
+          "wall_seconds": 3.53,
+          "prompt_tokens": 31,
+          "output_tokens": 6,
+          "tokens_per_second": 51.02,
+          "load_seconds": 3.264,
+          "queue_seconds": 0.0,
+          "time_to_first_content_seconds": 3.4125964998966083,
+          "prompt_seconds": 0.141335,
+          "prompt_tokens_per_second": 219.34,
+          "correct": true,
+          "answer": "323.0"
+        },
+        {
+          "phase": "warm",
+          "wall_seconds": 0.17,
+          "prompt_tokens": 31,
+          "output_tokens": 6,
+          "tokens_per_second": 51.16,
+          "load_seconds": 0.003,
+          "queue_seconds": 0.0,
+          "time_to_first_content_seconds": 0.05266279203351587,
+          "prompt_seconds": 0.042852,
+          "prompt_tokens_per_second": 723.42,
+          "correct": true,
+          "answer": "323.0"
+        },
+        {
+          "phase": "warm",
+          "wall_seconds": 0.168,
+          "prompt_tokens": 31,
+          "output_tokens": 6,
+          "tokens_per_second": 51.56,
+          "load_seconds": 0.001,
+          "queue_seconds": 0.0,
+          "time_to_first_content_seconds": 0.051367374951951206,
+          "prompt_seconds": 0.042856,
+          "prompt_tokens_per_second": 723.35,
+          "correct": true,
+          "answer": "323.0"
+        },
+        {
+          "phase": "warm",
+          "wall_seconds": 0.172,
+          "prompt_tokens": 31,
+          "output_tokens": 6,
+          "tokens_per_second": 50.91,
+          "load_seconds": 0.003,
+          "queue_seconds": 0.0,
+          "time_to_first_content_seconds": 0.05457224999554455,
+          "prompt_seconds": 0.043354,
+          "prompt_tokens_per_second": 715.04,
+          "correct": true,
+          "answer": "323.0"
+        }
+      ],
+      "loaded_models": [
+        {
+          "name": "hf.co/HauhauCS/Qwen3.5-4B-Uncensored-HauhauCS-Aggressive:Q4_K_M",
+          "size": 3211148654,
+          "size_vram": 3211148654,
+          "context_length": 4096
+        }
+      ],
+      "note": "Fixed greedy arithmetic checks output compatibility; not a general agent quality evaluation. The first request unloads this model to measure a cold start."
+    },
+    "residency": {
+      "server_version": "0.40.5",
+      "rows": [
+        {
+          "unload_after_run": false,
+          "status": "completed",
+          "correct": true,
+          "answer": "323",
+          "wall_seconds": 2.813,
+          "post_run_loaded_bytes": 3211148654,
+          "calls": [
+            {
+              "agent": "worker-1",
+              "model": "hf.co/HauhauCS/Qwen3.5-4B-Uncensored-HauhauCS-Aggressive:Q4_K_M",
+              "wall_seconds": 2.804,
+              "prompt_tokens": 429,
+              "output_tokens": 16,
+              "tokens_per_second": 38.61,
+              "load_seconds": 1.315,
+              "queue_seconds": 0.0,
+              "time_to_first_content_seconds": 2.3892623339779675,
+              "prompt_seconds": 1.063887,
+              "prompt_tokens_per_second": 403.24
+            }
+          ]
+        },
+        {
+          "unload_after_run": true,
+          "status": "completed",
+          "correct": true,
+          "answer": "323",
+          "wall_seconds": 0.514,
+          "post_run_loaded_bytes": 0,
+          "calls": [
+            {
+              "agent": "worker-1",
+              "model": "hf.co/HauhauCS/Qwen3.5-4B-Uncensored-HauhauCS-Aggressive:Q4_K_M",
+              "wall_seconds": 0.479,
+              "prompt_tokens": 429,
+              "output_tokens": 16,
+              "tokens_per_second": 37.95,
+              "load_seconds": 0.001,
+              "queue_seconds": 0.0,
+              "time_to_first_content_seconds": 0.056810042005963624,
+              "prompt_seconds": 0.043436,
+              "prompt_tokens_per_second": 9876.6
+            }
+          ]
+        },
+        {
+          "unload_after_run": false,
+          "status": "completed",
+          "correct": true,
+          "answer": "323",
+          "wall_seconds": 2.824,
+          "post_run_loaded_bytes": 3211148654,
+          "calls": [
+            {
+              "agent": "worker-1",
+              "model": "hf.co/HauhauCS/Qwen3.5-4B-Uncensored-HauhauCS-Aggressive:Q4_K_M",
+              "wall_seconds": 2.815,
+              "prompt_tokens": 429,
+              "output_tokens": 16,
+              "tokens_per_second": 37.63,
+              "load_seconds": 1.303,
+              "queue_seconds": 0.0,
+              "time_to_first_content_seconds": 2.389347291085869,
+              "prompt_seconds": 1.070503,
+              "prompt_tokens_per_second": 400.75
+            }
+          ]
+        },
+        {
+          "unload_after_run": true,
+          "status": "completed",
+          "correct": true,
+          "answer": "323",
+          "wall_seconds": 0.499,
+          "post_run_loaded_bytes": 0,
+          "calls": [
+            {
+              "agent": "worker-1",
+              "model": "hf.co/HauhauCS/Qwen3.5-4B-Uncensored-HauhauCS-Aggressive:Q4_K_M",
+              "wall_seconds": 0.46,
+              "prompt_tokens": 429,
+              "output_tokens": 16,
+              "tokens_per_second": 39.5,
+              "load_seconds": 0.001,
+              "queue_seconds": 0.0,
+              "time_to_first_content_seconds": 0.05508979200385511,
+              "prompt_seconds": 0.043275,
+              "prompt_tokens_per_second": 9913.34
+            }
+          ]
+        }
+      ],
+      "note": "Alternating resident/unload-after-run policy, same model and greedy prompt. Loaded bytes are Ollama allocation reports, not measured total system memory. Unloading can affect other clients using the same server."
+    }
+  },
+  "live_profile": {
+    "note": "Simple arithmetic and tool smoke tests. Warm-up excluded from inference rows. Team rows include planning and synthesis. Loaded size/VRAM is an end-of-case Ollama snapshot, not peak system memory. Parallel workers do not imply parallel inference.",
+    "context": 4096,
+    "inference_slots": 1,
+    "keep_alive_seconds": 600,
+    "unload_after_run": false,
+    "rows": [
+      {
+        "kind": "inference",
+        "model": "hf.co/HauhauCS/Qwen3.5-4B-Uncensored-HauhauCS-Aggressive:Q4_K_M",
+        "mode": "sequential",
+        "workers": 2,
+        "inference_slots": 1,
+        "repeat": 1,
+        "wall_seconds": 0.598,
+        "samples": [
+          {
+            "wall_seconds": 0.32,
+            "prompt_tokens": 49,
+            "output_tokens": 4,
+            "tokens_per_second": 55.34,
+            "load_seconds": 0.003,
+            "queue_seconds": 0.0,
+            "time_to_first_content_seconds": 0.24841037509031594,
+            "prompt_seconds": 0.194189,
+            "prompt_tokens_per_second": 252.33,
+            "correct": true,
+            "answer": "323"
+          },
+          {
+            "wall_seconds": 0.269,
+            "prompt_tokens": 48,
+            "output_tokens": 4,
+            "tokens_per_second": 56.03,
+            "load_seconds": 0.002,
+            "queue_seconds": 0.0,
+            "time_to_first_content_seconds": 0.19562487490475178,
+            "prompt_seconds": 0.18489,
+            "prompt_tokens_per_second": 259.61,
+            "correct": true,
+            "answer": "323"
+          }
+        ],
+        "correct": true,
+        "loaded_models": [
+          {
+            "name": "hf.co/HauhauCS/Qwen3.5-4B-Uncensored-HauhauCS-Aggressive:Q4_K_M",
+            "size": 3211148654,
+            "size_vram": 3211148654,
+            "context_length": 4096
+          }
+        ]
+      },
+      {
+        "kind": "inference",
+        "model": "hf.co/HauhauCS/Qwen3.5-4B-Uncensored-HauhauCS-Aggressive:Q4_K_M",
+        "mode": "sequential",
+        "workers": 2,
+        "inference_slots": 1,
+        "repeat": 2,
+        "wall_seconds": 0.542,
+        "samples": [
+          {
+            "wall_seconds": 0.268,
+            "prompt_tokens": 49,
+            "output_tokens": 4,
+            "tokens_per_second": 56.2,
+            "load_seconds": 0.005,
+            "queue_seconds": 0.0,
+            "time_to_first_content_seconds": 0.19649458397179842,
+            "prompt_seconds": 0.18471,
+            "prompt_tokens_per_second": 265.28,
+            "correct": true,
+            "answer": "323"
+          },
+          {
+            "wall_seconds": 0.266,
+            "prompt_tokens": 49,
+            "output_tokens": 4,
+            "tokens_per_second": 55.5,
+            "load_seconds": 0.001,
+            "queue_seconds": 0.0,
+            "time_to_first_content_seconds": 0.19350770802702755,
+            "prompt_seconds": 0.184756,
+            "prompt_tokens_per_second": 265.21,
+            "correct": true,
+            "answer": "323"
+          }
+        ],
+        "correct": true,
+        "loaded_models": [
+          {
+            "name": "hf.co/HauhauCS/Qwen3.5-4B-Uncensored-HauhauCS-Aggressive:Q4_K_M",
+            "size": 3211148654,
+            "size_vram": 3211148654,
+            "context_length": 4096
+          }
+        ]
+      },
+      {
+        "kind": "inference",
+        "model": "hf.co/HauhauCS/Qwen3.5-4B-Uncensored-HauhauCS-Aggressive:Q4_K_M",
+        "mode": "parallel",
+        "workers": 2,
+        "inference_slots": 1,
+        "repeat": 1,
+        "wall_seconds": 0.532,
+        "samples": [
+          {
+            "wall_seconds": 0.263,
+            "prompt_tokens": 50,
+            "output_tokens": 4,
+            "tokens_per_second": 56.19,
+            "load_seconds": 0.001,
+            "queue_seconds": 0.0,
+            "time_to_first_content_seconds": 0.19226829195395112,
+            "prompt_seconds": 0.182984,
+            "prompt_tokens_per_second": 273.25,
+            "correct": true,
+            "answer": "323"
+          },
+          {
+            "wall_seconds": 0.525,
+            "prompt_tokens": 49,
+            "output_tokens": 4,
+            "tokens_per_second": 56.46,
+            "load_seconds": 0.001,
+            "queue_seconds": 0.263,
+            "time_to_first_content_seconds": 0.45384450000710785,
+            "prompt_seconds": 0.182491,
+            "prompt_tokens_per_second": 268.51,
+            "correct": true,
+            "answer": "323"
+          }
+        ],
+        "correct": true,
+        "loaded_models": [
+          {
+            "name": "hf.co/HauhauCS/Qwen3.5-4B-Uncensored-HauhauCS-Aggressive:Q4_K_M",
+            "size": 3211148654,
+            "size_vram": 3211148654,
+            "context_length": 4096
+          }
+        ]
+      },
+      {
+        "kind": "inference",
+        "model": "hf.co/HauhauCS/Qwen3.5-4B-Uncensored-HauhauCS-Aggressive:Q4_K_M",
+        "mode": "parallel",
+        "workers": 2,
+        "inference_slots": 1,
+        "repeat": 2,
+        "wall_seconds": 0.536,
+        "samples": [
+          {
+            "wall_seconds": 0.268,
+            "prompt_tokens": 47,
+            "output_tokens": 4,
+            "tokens_per_second": 55.86,
+            "load_seconds": 0.004,
+            "queue_seconds": 0.0,
+            "time_to_first_content_seconds": 0.19662354094907641,
+            "prompt_seconds": 0.18363,
+            "prompt_tokens_per_second": 255.95,
+            "correct": true,
+            "answer": "323"
+          },
+          {
+            "wall_seconds": 0.531,
+            "prompt_tokens": 49,
+            "output_tokens": 4,
+            "tokens_per_second": 57.47,
+            "load_seconds": 0.002,
+            "queue_seconds": 0.268,
+            "time_to_first_content_seconds": 0.4610943340230733,
+            "prompt_seconds": 0.182429,
+            "prompt_tokens_per_second": 268.6,
+            "correct": true,
+            "answer": "323"
+          }
+        ],
+        "correct": true,
+        "loaded_models": [
+          {
+            "name": "hf.co/HauhauCS/Qwen3.5-4B-Uncensored-HauhauCS-Aggressive:Q4_K_M",
+            "size": 3211148654,
+            "size_vram": 3211148654,
+            "context_length": 4096
+          }
+        ]
+      },
+      {
+        "kind": "tool",
+        "model": "hf.co/HauhauCS/Qwen3.5-4B-Uncensored-HauhauCS-Aggressive:Q4_K_M",
+        "protocol": "json",
+        "wall_seconds": 3.482,
+        "status": "completed",
+        "correct": true,
+        "calls": [
+          {
+            "agent": "worker-1",
+            "model": "hf.co/HauhauCS/Qwen3.5-4B-Uncensored-HauhauCS-Aggressive:Q4_K_M",
+            "wall_seconds": 2.042,
+            "prompt_tokens": 540,
+            "output_tokens": 29,
+            "tokens_per_second": 40.0,
+            "load_seconds": 0.002,
+            "queue_seconds": 0.0,
+            "time_to_first_content_seconds": 1.31769116607029,
+            "prompt_seconds": 1.288071,
+            "prompt_tokens_per_second": 419.23
+          },
+          {
+            "agent": "worker-1",
+            "model": "hf.co/HauhauCS/Qwen3.5-4B-Uncensored-HauhauCS-Aggressive:Q4_K_M",
+            "wall_seconds": 1.379,
+            "prompt_tokens": 638,
+            "output_tokens": 44,
+            "tokens_per_second": 43.99,
+            "load_seconds": 0.002,
+            "queue_seconds": 0.0,
+            "time_to_first_content_seconds": 0.3786613749107346,
+            "prompt_seconds": 0.359968,
+            "prompt_tokens_per_second": 1772.38
+          }
+        ],
+        "answer": "The command `printf 'AGENTSCAPE_TOOL_OK\\n'` was executed successfully. The actual output is:\n\nAGENTSCAPE_TOOL_OK\n"
+      },
+      {
+        "kind": "tool",
+        "model": "hf.co/HauhauCS/Qwen3.5-4B-Uncensored-HauhauCS-Aggressive:Q4_K_M",
+        "protocol": "native",
+        "wall_seconds": 3.925,
+        "status": "completed",
+        "correct": true,
+        "calls": [
+          {
+            "agent": "worker-1",
+            "model": "hf.co/HauhauCS/Qwen3.5-4B-Uncensored-HauhauCS-Aggressive:Q4_K_M",
+            "wall_seconds": 3.11,
+            "prompt_tokens": 1003,
+            "output_tokens": 34,
+            "tokens_per_second": 44.24,
+            "load_seconds": 0.006,
+            "queue_seconds": 0.0,
+            "time_to_first_content_seconds": null,
+            "prompt_seconds": 2.250369,
+            "prompt_tokens_per_second": 445.7
+          },
+          {
+            "agent": "worker-1",
+            "model": "hf.co/HauhauCS/Qwen3.5-4B-Uncensored-HauhauCS-Aggressive:Q4_K_M",
+            "wall_seconds": 0.756,
+            "prompt_tokens": 1110,
+            "output_tokens": 21,
+            "tokens_per_second": 45.71,
+            "load_seconds": 0.002,
+            "queue_seconds": 0.0,
+            "time_to_first_content_seconds": 0.2966408340726048,
+            "prompt_seconds": 0.27781,
+            "prompt_tokens_per_second": 3995.54
+          }
+        ],
+        "answer": "The command executed successfully. The actual output is:\n\n```\nAGENTSCAPE_TOOL_OK\n```"
+      },
+      {
+        "kind": "team",
+        "model": "hf.co/HauhauCS/Qwen3.5-4B-Uncensored-HauhauCS-Aggressive:Q4_K_M",
+        "supervisor": "",
+        "mode": "sequential",
+        "workers": 2,
+        "wall_seconds": 5.122,
+        "status": "completed",
+        "correct": true,
+        "calls": [
+          {
+            "agent": "worker-1",
+            "model": "hf.co/HauhauCS/Qwen3.5-4B-Uncensored-HauhauCS-Aggressive:Q4_K_M",
+            "wall_seconds": 1.95,
+            "prompt_tokens": 534,
+            "output_tokens": 25,
+            "tokens_per_second": 42.83,
+            "load_seconds": 0.001,
+            "queue_seconds": 0.0,
+            "time_to_first_content_seconds": 1.3663023330736905,
+            "prompt_seconds": 1.279746,
+            "prompt_tokens_per_second": 417.27
+          },
+          {
+            "agent": "worker-2",
+            "model": "hf.co/HauhauCS/Qwen3.5-4B-Uncensored-HauhauCS-Aggressive:Q4_K_M",
+            "wall_seconds": 1.964,
+            "prompt_tokens": 565,
+            "output_tokens": 25,
+            "tokens_per_second": 43.12,
+            "load_seconds": 0.001,
+            "queue_seconds": 0.0,
+            "time_to_first_content_seconds": 1.3847462079720572,
+            "prompt_seconds": 1.326174,
+            "prompt_tokens_per_second": 426.04
+          },
+          {
+            "agent": "worker-1",
+            "model": "hf.co/HauhauCS/Qwen3.5-4B-Uncensored-HauhauCS-Aggressive:Q4_K_M",
+            "wall_seconds": 1.202,
+            "prompt_tokens": 193,
+            "output_tokens": 27,
+            "tokens_per_second": 44.28,
+            "load_seconds": 0.002,
+            "queue_seconds": 0.0,
+            "time_to_first_content_seconds": 0.598769334028475,
+            "prompt_seconds": 0.530463,
+            "prompt_tokens_per_second": 363.83
+          }
+        ],
+        "answer": "The calculation of 17 multiplied by 19 is 323. This result was confirmed by two independent checks."
+      },
+      {
+        "kind": "team",
+        "model": "hf.co/HauhauCS/Qwen3.5-4B-Uncensored-HauhauCS-Aggressive:Q4_K_M",
+        "supervisor": "",
+        "mode": "parallel",
+        "workers": 2,
+        "wall_seconds": 2.495,
+        "status": "completed",
+        "correct": true,
+        "calls": [
+          {
+            "agent": "worker-1",
+            "model": "hf.co/HauhauCS/Qwen3.5-4B-Uncensored-HauhauCS-Aggressive:Q4_K_M",
+            "wall_seconds": 0.682,
+            "prompt_tokens": 534,
+            "output_tokens": 25,
+            "tokens_per_second": 43.44,
+            "load_seconds": 0.002,
+            "queue_seconds": 0.0,
+            "time_to_first_content_seconds": 0.10681458306498826,
+            "prompt_seconds": 0.0573,
+            "prompt_tokens_per_second": 9319.37
+          },
+          {
+            "agent": "worker-2",
+            "model": "hf.co/HauhauCS/Qwen3.5-4B-Uncensored-HauhauCS-Aggressive:Q4_K_M",
+            "wall_seconds": 1.573,
+            "prompt_tokens": 534,
+            "output_tokens": 25,
+            "tokens_per_second": 43.09,
+            "load_seconds": 0.002,
+            "queue_seconds": 0.682,
+            "time_to_first_content_seconds": 0.9932135839480907,
+            "prompt_seconds": 0.274771,
+            "prompt_tokens_per_second": 1943.44
+          },
+          {
+            "agent": "worker-1",
+            "model": "hf.co/HauhauCS/Qwen3.5-4B-Uncensored-HauhauCS-Aggressive:Q4_K_M",
+            "wall_seconds": 0.915,
+            "prompt_tokens": 193,
+            "output_tokens": 25,
+            "tokens_per_second": 31.42,
+            "load_seconds": 0.002,
+            "queue_seconds": 0.0,
+            "time_to_first_content_seconds": 0.11909391696099192,
+            "prompt_seconds": 0.071712,
+            "prompt_tokens_per_second": 2691.32
+          }
+        ],
+        "answer": "The calculation 17 \u00d7 19 equals 323. This result is confirmed by two independent checks."
+      }
+    ],
+    "resources": {
+      "interval_seconds": 0.5,
+      "samples": 41,
+      "peak_python_rss_bytes": 55443456,
+      "peak_local_ollama_rss_bytes": 4527964160,
+      "system_swap_before_bytes": 13339522498,
+      "system_swap_after_bytes": 17768770437,
+      "system_swap_growth_bytes": 4429247939,
+      "errors": [],
+      "note": "Sampled process RSS, not exact peak unified/GPU memory. Ollama RSS sums all local Ollama process trees and can double-count shared pages. Swap is system-wide and affected by other apps; remote inference memory is not measured."
+    }
+  },
+  "limitations": [
+    "Event trials use tracemalloc and repetitive synthetic payloads, not whole-application RSS or representative compression ratios.",
+    "Live correctness tests are arithmetic and tool smoke tests, not a broad quality benchmark.",
+    "Model residency trials alternate cold resident runs and warm unload-after-run runs; their wall times cannot establish a policy speedup.",
+    "RSS is sampled and can double-count shared allocations. Swap is system-wide. No inference-speed or swap reduction is claimed."
+  ]
+}

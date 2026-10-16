@@ -6,18 +6,28 @@ import tempfile
 import time
 import uuid
 from concurrent.futures import ThreadPoolExecutor
+from contextlib import nullcontext
 from dataclasses import replace
+from decimal import Decimal, InvalidOperation
 from pathlib import Path
 
 from .config import Worker
 from .engine import Run
 from .ollama import Ollama, metrics
+from .profiling import ResourceSampler
 
 
 PROMPT = "Calculate 17 times 19. Return only the decimal result, with no explanation."
 
 
-def benchmark(config, models, workers=2, supervisor="", repeats=1, output=None, progress=lambda _: None):
+def arithmetic_correct(answer):
+    try:
+        return Decimal(answer.strip()) == Decimal(323)
+    except InvalidOperation:
+        return False
+
+
+def _benchmark(config, models, workers=2, supervisor="", repeats=1, progress=lambda _: None):
     rows = []
     client = Ollama(config.ollama_url, config.inference_parallel, config.request_timeout)
     config = replace(config, max_tokens=256, thinking=False, routing="team")
@@ -32,7 +42,7 @@ def benchmark(config, models, workers=2, supervisor="", repeats=1, output=None, 
                     labels = [uuid.uuid4().hex[:8] for _ in range(workers)]
                     def sample(i):
                         response = client.chat(model, [{"role": "user", "content": PROMPT + f"\nTest ID (do not include in answer): {labels[i]}"}], config)
-                        return {**metrics(response), "correct": response["message"]["content"].strip() == "323",
+                        return {**metrics(response), "correct": arithmetic_correct(response["message"]["content"]),
                                 "answer": response["message"]["content"]}
                     start = time.monotonic()
                     if mode == "parallel":
@@ -71,7 +81,17 @@ def benchmark(config, models, workers=2, supervisor="", repeats=1, output=None, 
                                  "calls": team.calls, "answer": team.answer})
     result = {"note": "Simple arithmetic and tool smoke tests. Warm-up excluded from inference rows. Team rows include planning and synthesis. "
                        "Loaded size/VRAM is an end-of-case Ollama snapshot, not peak system memory. Parallel workers do not imply parallel inference.",
-              "context": config.context, "inference_slots": config.inference_parallel, "rows": rows}
+              "context": config.context, "inference_slots": config.inference_parallel,
+              "keep_alive_seconds": config.keep_alive, "unload_after_run": config.unload_after_run, "rows": rows}
+    return result
+
+
+def benchmark(config, models, workers=2, supervisor="", repeats=1, output=None, progress=lambda _: None, *, profile=False):
+    sampler = ResourceSampler() if profile else None
+    with (sampler if sampler is not None else nullcontext()):
+        result = _benchmark(config, models, workers, supervisor, repeats, progress)
+    if sampler is not None:
+        result["resources"] = sampler.summary()
     if output:
         Path(output).parent.mkdir(parents=True, exist_ok=True)
         Path(output).write_text(json.dumps(result, indent=2))

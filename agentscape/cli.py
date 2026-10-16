@@ -57,6 +57,7 @@ def show_config(config, raw=False):
     console.print(Text(f"Workers: {config.mode} · inference slots: {config.inference_parallel} · context: {config.context} · protocol: {config.protocol}"))
     console.print(Text(f"Routing: {config.routing} · configured workers are available capacity"))
     console.print(Text(f"Commands/files: {config.permissions} · model phase unloading: {'on' if config.compact else 'off'} · thinking: {config.thinking}"))
+    console.print(Text(f"Model keep-alive: {config.keep_alive}s · unload after run: {config.unload_after_run}"))
     console.print(Text(f"Workspace: {config.workspace}\nOllama: {config.ollama_url}\nSettings: {STATE / 'config.json'}", style="dim"))
 
 
@@ -181,7 +182,7 @@ def run_task(config, task, args=None):
     if args:
         if args.workers is not None:
             config.resize(args.workers)
-        for key in ("mode", "routing", "model", "supervisor", "permissions", "workspace", "inference_parallel"):
+        for key in ("mode", "routing", "model", "supervisor", "permissions", "workspace", "inference_parallel", "keep_alive", "unload_after_run"):
             value = getattr(args, key, None)
             if value is not None:
                 setattr(config, key, "" if key == "supervisor" and value == "off" else value)
@@ -227,6 +228,8 @@ def parser():
     run.add_argument("--permissions", choices=["ask", "allow", "deny"])
     run.add_argument("--workspace")
     run.add_argument("--inference-parallel", type=int)
+    run.add_argument("--keep-alive", type=int, help="Seconds to retain the model: -1 indefinite, 0 immediate unload")
+    run.add_argument("--unload-after-run", action="store_true", default=None, help="Release used models after all run steps finish")
     run.add_argument("--json", action="store_true")
     for name in ["workers", "agents", "concurrency"]:
         sub.add_parser(name).add_argument("value", nargs="?", type=int)
@@ -254,6 +257,7 @@ def parser():
     bench.add_argument("--workers", type=int, default=2)
     bench.add_argument("--supervisor", default="")
     bench.add_argument("--repeats", type=int, default=1)
+    bench.add_argument("--profile", action="store_true", help="Sample local Python/Ollama RSS and system swap")
     bench.add_argument("--output", default=str(STATE / "benchmark.json"))
     sub.add_parser("runs")
     sub.add_parser("show").add_argument("id", nargs="?", default="latest")
@@ -366,7 +370,7 @@ def dispatch(args):
         models = args.models or [config.model]
         for model in [*models, *([args.supervisor] if args.supervisor else [])]:
             model_exists(config, model)
-        result = benchmark(config, models, args.workers, args.supervisor, args.repeats, args.output, lambda text: console.print(Text(text, style="dim")))
+        result = benchmark(config, models, args.workers, args.supervisor, args.repeats, args.output, lambda text: console.print(Text(text, style="dim")), profile=args.profile)
         table = Table(title="Benchmark results")
         for title in ["Case", "Scheduling", "Seconds", "Check"]:
             table.add_column(title)
