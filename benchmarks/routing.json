@@ -1,0 +1,92 @@
+[
+  {
+    "case": "greeting",
+    "passed": true,
+    "route": {
+      "mode": "direct",
+      "workers": 1,
+      "reason": "greeting"
+    },
+    "status": "completed",
+    "wall_seconds": 2.984,
+    "calls": 1,
+    "reports": 1,
+    "tool_calls": 0,
+    "output_tokens": 31,
+    "answer": "Hello! How can I help you today?",
+    "run_id": "20261010-034924-32680f",
+    "model": "hf.co/HauhauCS/Qwen3.5-4B-Uncensored-HauhauCS-Aggressive:Q4_K_M"
+  },
+  {
+    "case": "fact",
+    "passed": true,
+    "route": {
+      "mode": "direct",
+      "workers": 1,
+      "reason": "This is an ordinary factual question that can be answered without tools."
+    },
+    "status": "completed",
+    "wall_seconds": 1.537,
+    "calls": 1,
+    "reports": 1,
+    "tool_calls": 0,
+    "output_tokens": 50,
+    "answer": "The capital of France is Paris.",
+    "run_id": "20261010-034927-819fd8",
+    "model": "hf.co/HauhauCS/Qwen3.5-4B-Uncensored-HauhauCS-Aggressive:Q4_K_M"
+  },
+  {
+    "case": "focused_tool",
+    "passed": true,
+    "route": {
+      "mode": "single",
+      "workers": 1,
+      "reason": "Running a single shell command is a focused task."
+    },
+    "status": "completed",
+    "wall_seconds": 4.885,
+    "calls": 3,
+    "reports": 1,
+    "tool_calls": 1,
+    "output_tokens": 112,
+    "answer": "The command `printf 'ROUTE_SINGLE_OK\\n'` was executed successfully. The actual output is:\nROUTE_SINGLE_OK\n\nAll checks are complete.",
+    "run_id": "20261010-034928-07b696",
+    "model": "hf.co/HauhauCS/Qwen3.5-4B-Uncensored-HauhauCS-Aggressive:Q4_K_M"
+  },
+  {
+    "case": "short_file_check",
+    "passed": true,
+    "route": {
+      "mode": "single",
+      "workers": 1,
+      "reason": "Reading two configuration files to list their keys is a focused tool task."
+    },
+    "status": "completed",
+    "wall_seconds": 6.242,
+    "calls": 4,
+    "reports": 1,
+    "tool_calls": 2,
+    "output_tokens": 156,
+    "answer": "Frontend config keys: debug, environment.\nBackend config keys: port, timeout_seconds.",
+    "run_id": "20261010-034933-895408",
+    "model": "hf.co/HauhauCS/Qwen3.5-4B-Uncensored-HauhauCS-Aggressive:Q4_K_M"
+  },
+  {
+    "case": "parallel_audits",
+    "passed": true,
+    "route": {
+      "mode": "team",
+      "workers": 2,
+      "reason": "The user explicitly requested two independent audits on separate files to be performed in parallel."
+    },
+    "status": "completed",
+    "wall_seconds": 26.669,
+    "calls": 9,
+    "reports": 2,
+    "tool_calls": 4,
+    "output_tokens": 727,
+    "answer": "Both audits identified configuration errors in their respective files.\n\n**Frontend (`frontend/config.json`):**\n*   **Issue:** The `debug` setting is `true` while the `environment` is set to `production`.\n*   **Violation:** This breaks the rule requiring `debug` to be `false` in production.\n\n**Backend (`backend/config.json`):**\n*   **Issue:** The `port` is set to `70000` and `timeout_seconds` is `-1`.\n*   **Violations:**\n    *   The port value exceeds the valid range of 1\u201365535.\n    *   The `timeout_seconds` is negative, violating the requirement for nonnegative values.\n\nNo changes were made to the files; only read-only verification was performed.",
+    "run_id": "20261010-034940-16611e",
+    "model": "hf.co/HauhauCS/Qwen3.5-4B-Uncensored-HauhauCS-Aggressive:Q4_K_M"
+  }
+]

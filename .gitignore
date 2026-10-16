@@ -1,0 +1,26 @@
+.venv/
+.agentscape/
+workspace/
+__pycache__/
+*.egg-info/
+.pytest_cache/
+
+# Local secrets and credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+credentials.json
+*service-account*.json
+
+# Local artifacts
+.DS_Store
+*.py[cod]
+build/
+dist/
+.coverage
+htmlcov/
+.ruff_cache/

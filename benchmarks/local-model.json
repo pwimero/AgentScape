@@ -1,0 +1,395 @@
+{
+  "note": "Simple arithmetic and tool smoke tests. Warm-up excluded from inference rows. Team rows include planning and synthesis. Loaded size/VRAM is an end-of-case Ollama snapshot, not peak system memory. Parallel workers do not imply parallel inference.",
+  "context": 4096,
+  "inference_slots": 1,
+  "rows": [
+    {
+      "kind": "inference",
+      "model": "hf.co/HauhauCS/Qwen3.5-4B-Uncensored-HauhauCS-Aggressive:Q4_K_M",
+      "mode": "sequential",
+      "workers": 2,
+      "inference_slots": 1,
+      "repeat": 1,
+      "wall_seconds": 0.797,
+      "samples": [
+        {
+          "wall_seconds": 0.492,
+          "prompt_tokens": 48,
+          "output_tokens": 4,
+          "tokens_per_second": 54.55,
+          "load_seconds": 0.003,
+          "correct": true,
+          "answer": "323"
+        },
+        {
+          "wall_seconds": 0.3,
+          "prompt_tokens": 50,
+          "output_tokens": 4,
+          "tokens_per_second": 51.48,
+          "load_seconds": 0.002,
+          "correct": true,
+          "answer": "323"
+        }
+      ],
+      "correct": true,
+      "loaded_models": [
+        {
+          "name": "hf.co/HauhauCS/Qwen3.5-4B-Uncensored-HauhauCS-Aggressive:Q4_K_M",
+          "size": 3240466840,
+          "size_vram": 3240466840,
+          "context_length": 4096
+        }
+      ]
+    },
+    {
+      "kind": "inference",
+      "model": "hf.co/HauhauCS/Qwen3.5-4B-Uncensored-HauhauCS-Aggressive:Q4_K_M",
+      "mode": "sequential",
+      "workers": 2,
+      "inference_slots": 1,
+      "repeat": 2,
+      "wall_seconds": 0.611,
+      "samples": [
+        {
+          "wall_seconds": 0.307,
+          "prompt_tokens": 50,
+          "output_tokens": 4,
+          "tokens_per_second": 45.96,
+          "load_seconds": 0.002,
+          "correct": true,
+          "answer": "323"
+        },
+        {
+          "wall_seconds": 0.299,
+          "prompt_tokens": 49,
+          "output_tokens": 4,
+          "tokens_per_second": 51.85,
+          "load_seconds": 0.002,
+          "correct": true,
+          "answer": "323"
+        }
+      ],
+      "correct": true,
+      "loaded_models": [
+        {
+          "name": "hf.co/HauhauCS/Qwen3.5-4B-Uncensored-HauhauCS-Aggressive:Q4_K_M",
+          "size": 3240466840,
+          "size_vram": 3240466840,
+          "context_length": 4096
+        }
+      ]
+    },
+    {
+      "kind": "inference",
+      "model": "hf.co/HauhauCS/Qwen3.5-4B-Uncensored-HauhauCS-Aggressive:Q4_K_M",
+      "mode": "parallel",
+      "workers": 2,
+      "inference_slots": 1,
+      "repeat": 1,
+      "wall_seconds": 0.62,
+      "samples": [
+        {
+          "wall_seconds": 0.319,
+          "prompt_tokens": 48,
+          "output_tokens": 4,
+          "tokens_per_second": 50.14,
+          "load_seconds": 0.003,
+          "correct": true,
+          "answer": "323"
+        },
+        {
+          "wall_seconds": 0.614,
+          "prompt_tokens": 47,
+          "output_tokens": 4,
+          "tokens_per_second": 50.0,
+          "load_seconds": 0.002,
+          "correct": true,
+          "answer": "323"
+        }
+      ],
+      "correct": true,
+      "loaded_models": [
+        {
+          "name": "hf.co/HauhauCS/Qwen3.5-4B-Uncensored-HauhauCS-Aggressive:Q4_K_M",
+          "size": 3240466840,
+          "size_vram": 3240466840,
+          "context_length": 4096
+        }
+      ]
+    },
+    {
+      "kind": "inference",
+      "model": "hf.co/HauhauCS/Qwen3.5-4B-Uncensored-HauhauCS-Aggressive:Q4_K_M",
+      "mode": "parallel",
+      "workers": 2,
+      "inference_slots": 1,
+      "repeat": 2,
+      "wall_seconds": 0.607,
+      "samples": [
+        {
+          "wall_seconds": 0.303,
+          "prompt_tokens": 45,
+          "output_tokens": 4,
+          "tokens_per_second": 48.11,
+          "load_seconds": 0.002,
+          "correct": true,
+          "answer": "323"
+        },
+        {
+          "wall_seconds": 0.601,
+          "prompt_tokens": 47,
+          "output_tokens": 4,
+          "tokens_per_second": 50.51,
+          "load_seconds": 0.002,
+          "correct": true,
+          "answer": "323"
+        }
+      ],
+      "correct": true,
+      "loaded_models": [
+        {
+          "name": "hf.co/HauhauCS/Qwen3.5-4B-Uncensored-HauhauCS-Aggressive:Q4_K_M",
+          "size": 3240466840,
+          "size_vram": 3240466840,
+          "context_length": 4096
+        }
+      ]
+    },
+    {
+      "kind": "tool",
+      "model": "hf.co/HauhauCS/Qwen3.5-4B-Uncensored-HauhauCS-Aggressive:Q4_K_M",
+      "protocol": "json",
+      "wall_seconds": 3.233,
+      "status": "completed",
+      "correct": true,
+      "calls": [
+        {
+          "agent": "worker-1",
+          "model": "hf.co/HauhauCS/Qwen3.5-4B-Uncensored-HauhauCS-Aggressive:Q4_K_M",
+          "wall_seconds": 2.072,
+          "prompt_tokens": 480,
+          "output_tokens": 29,
+          "tokens_per_second": 35.58,
+          "load_seconds": 0.002
+        },
+        {
+          "agent": "worker-1",
+          "model": "hf.co/HauhauCS/Qwen3.5-4B-Uncensored-HauhauCS-Aggressive:Q4_K_M",
+          "wall_seconds": 1.098,
+          "prompt_tokens": 578,
+          "output_tokens": 25,
+          "tokens_per_second": 36.87,
+          "load_seconds": 0.004
+        }
+      ],
+      "answer": "Command executed successfully. Output: AGENTSCAPE_TOOL_OK"
+    },
+    {
+      "kind": "tool",
+      "model": "hf.co/HauhauCS/Qwen3.5-4B-Uncensored-HauhauCS-Aggressive:Q4_K_M",
+      "protocol": "native",
+      "wall_seconds": 5.092,
+      "status": "completed",
+      "correct": true,
+      "calls": [
+        {
+          "agent": "worker-1",
+          "model": "hf.co/HauhauCS/Qwen3.5-4B-Uncensored-HauhauCS-Aggressive:Q4_K_M",
+          "wall_seconds": 3.808,
+          "prompt_tokens": 943,
+          "output_tokens": 34,
+          "tokens_per_second": 42.91,
+          "load_seconds": 0.006
+        },
+        {
+          "agent": "worker-1",
+          "model": "hf.co/HauhauCS/Qwen3.5-4B-Uncensored-HauhauCS-Aggressive:Q4_K_M",
+          "wall_seconds": 1.214,
+          "prompt_tokens": 1050,
+          "output_tokens": 32,
+          "tokens_per_second": 37.49,
+          "load_seconds": 0.006
+        }
+      ],
+      "answer": "The command `printf 'AGENTSCAPE_TOOL_OK\\n'` executed successfully.\n\n**Actual output:**\n```\nAGENTSCAPE_TOOL_OK\n```"
+    },
+    {
+      "kind": "team",
+      "model": "hf.co/HauhauCS/Qwen3.5-4B-Uncensored-HauhauCS-Aggressive:Q4_K_M",
+      "supervisor": "",
+      "mode": "sequential",
+      "workers": 2,
+      "wall_seconds": 13.688,
+      "status": "completed",
+      "correct": true,
+      "calls": [
+        {
+          "agent": "worker-1",
+          "model": "hf.co/HauhauCS/Qwen3.5-4B-Uncensored-HauhauCS-Aggressive:Q4_K_M",
+          "wall_seconds": 6.389,
+          "prompt_tokens": 474,
+          "output_tokens": 138,
+          "tokens_per_second": 33.83,
+          "load_seconds": 0.002
+        },
+        {
+          "agent": "worker-2",
+          "model": "hf.co/HauhauCS/Qwen3.5-4B-Uncensored-HauhauCS-Aggressive:Q4_K_M",
+          "wall_seconds": 3.695,
+          "prompt_tokens": 614,
+          "output_tokens": 61,
+          "tokens_per_second": 32.27,
+          "load_seconds": 0.03
+        },
+        {
+          "agent": "worker-1",
+          "model": "hf.co/HauhauCS/Qwen3.5-4B-Uncensored-HauhauCS-Aggressive:Q4_K_M",
+          "wall_seconds": 3.591,
+          "prompt_tokens": 278,
+          "output_tokens": 109,
+          "tokens_per_second": 38.26,
+          "load_seconds": 0.005
+        }
+      ],
+      "answer": "**Final Answer:** 323\n\n**Evidence:**\n*   **Worker-1:** Calculated 17 \u00d7 19 = 323. Verified via decomposition (17 \u00d7 20 - 17) and standard long multiplication.\n*   **Worker-2:** Calculated 17 \u00d7 19 = 323. Verified via decomposition (340 - 17) and standard multiplication.\n\nBoth workers independently arrived at the same result with consistent verification methods."
+    },
+    {
+      "kind": "team",
+      "model": "hf.co/HauhauCS/Qwen3.5-4B-Uncensored-HauhauCS-Aggressive:Q4_K_M",
+      "supervisor": "",
+      "mode": "parallel",
+      "workers": 2,
+      "wall_seconds": 12.644,
+      "status": "completed",
+      "correct": true,
+      "calls": [
+        {
+          "agent": "worker-1",
+          "model": "hf.co/HauhauCS/Qwen3.5-4B-Uncensored-HauhauCS-Aggressive:Q4_K_M",
+          "wall_seconds": 3.815,
+          "prompt_tokens": 474,
+          "output_tokens": 136,
+          "tokens_per_second": 37.68,
+          "load_seconds": 0.005
+        },
+        {
+          "agent": "worker-2",
+          "model": "hf.co/HauhauCS/Qwen3.5-4B-Uncensored-HauhauCS-Aggressive:Q4_K_M",
+          "wall_seconds": 7.575,
+          "prompt_tokens": 474,
+          "output_tokens": 123,
+          "tokens_per_second": 37.34,
+          "load_seconds": 0.004
+        },
+        {
+          "agent": "worker-1",
+          "model": "hf.co/HauhauCS/Qwen3.5-4B-Uncensored-HauhauCS-Aggressive:Q4_K_M",
+          "wall_seconds": 5.04,
+          "prompt_tokens": 334,
+          "output_tokens": 118,
+          "tokens_per_second": 33.56,
+          "load_seconds": 0.005
+        }
+      ],
+      "answer": "**Final Answer:** 323\n\n**Evidence:**\n- **Worker-1:** Reported result as 323. Verified via distributive property ($17 \\times 20 - 17 = 340 - 17$) and standard long multiplication ($153 + 170$).\n- **Worker-2:** Reported result as 323. Verified via the same methods as Worker-1.\n\nBoth workers independently arrived at the same result with consistent verification steps. No disagreements or incomplete work were observed."
+    },
+    {
+      "kind": "team",
+      "model": "hf.co/HauhauCS/Qwen3.5-4B-Uncensored-HauhauCS-Aggressive:Q4_K_M",
+      "supervisor": "hf.co/HauhauCS/Qwen3.5-4B-Uncensored-HauhauCS-Aggressive:Q4_K_M",
+      "mode": "sequential",
+      "workers": 2,
+      "wall_seconds": 5.958,
+      "status": "completed",
+      "correct": true,
+      "calls": [
+        {
+          "agent": "supervisor",
+          "model": "hf.co/HauhauCS/Qwen3.5-4B-Uncensored-HauhauCS-Aggressive:Q4_K_M",
+          "wall_seconds": 2.627,
+          "prompt_tokens": 160,
+          "output_tokens": 57,
+          "tokens_per_second": 36.7,
+          "load_seconds": 0.01
+        },
+        {
+          "agent": "worker-1",
+          "model": "hf.co/HauhauCS/Qwen3.5-4B-Uncensored-HauhauCS-Aggressive:Q4_K_M",
+          "wall_seconds": 1.12,
+          "prompt_tokens": 461,
+          "output_tokens": 24,
+          "tokens_per_second": 34.31,
+          "load_seconds": 0.003
+        },
+        {
+          "agent": "worker-2",
+          "model": "hf.co/HauhauCS/Qwen3.5-4B-Uncensored-HauhauCS-Aggressive:Q4_K_M",
+          "wall_seconds": 1.145,
+          "prompt_tokens": 490,
+          "output_tokens": 24,
+          "tokens_per_second": 35.13,
+          "load_seconds": 0.003
+        },
+        {
+          "agent": "supervisor",
+          "model": "hf.co/HauhauCS/Qwen3.5-4B-Uncensored-HauhauCS-Aggressive:Q4_K_M",
+          "wall_seconds": 1.045,
+          "prompt_tokens": 129,
+          "output_tokens": 19,
+          "tokens_per_second": 33.25,
+          "load_seconds": 0.003
+        }
+      ],
+      "answer": "Both worker reports independently calculated 17 \u00d7 19 as 323."
+    },
+    {
+      "kind": "team",
+      "model": "hf.co/HauhauCS/Qwen3.5-4B-Uncensored-HauhauCS-Aggressive:Q4_K_M",
+      "supervisor": "hf.co/HauhauCS/Qwen3.5-4B-Uncensored-HauhauCS-Aggressive:Q4_K_M",
+      "mode": "parallel",
+      "workers": 2,
+      "wall_seconds": 6.154,
+      "status": "completed",
+      "correct": true,
+      "calls": [
+        {
+          "agent": "supervisor",
+          "model": "hf.co/HauhauCS/Qwen3.5-4B-Uncensored-HauhauCS-Aggressive:Q4_K_M",
+          "wall_seconds": 2.096,
+          "prompt_tokens": 160,
+          "output_tokens": 57,
+          "tokens_per_second": 34.2,
+          "load_seconds": 0.007
+        },
+        {
+          "agent": "worker-2",
+          "model": "hf.co/HauhauCS/Qwen3.5-4B-Uncensored-HauhauCS-Aggressive:Q4_K_M",
+          "wall_seconds": 0.974,
+          "prompt_tokens": 461,
+          "output_tokens": 24,
+          "tokens_per_second": 35.98,
+          "load_seconds": 0.005
+        },
+        {
+          "agent": "worker-1",
+          "model": "hf.co/HauhauCS/Qwen3.5-4B-Uncensored-HauhauCS-Aggressive:Q4_K_M",
+          "wall_seconds": 2.049,
+          "prompt_tokens": 461,
+          "output_tokens": 24,
+          "tokens_per_second": 35.45,
+          "load_seconds": 0.003
+        },
+        {
+          "agent": "supervisor",
+          "model": "hf.co/HauhauCS/Qwen3.5-4B-Uncensored-HauhauCS-Aggressive:Q4_K_M",
+          "wall_seconds": 2.0,
+          "prompt_tokens": 129,
+          "output_tokens": 60,
+          "tokens_per_second": 38.13,
+          "load_seconds": 0.004
+        }
+      ],
+      "answer": "**Result:** 323\n\n**Evidence:**\n- Worker-1 calculated 17 * 19 = 323.\n- Worker-2 calculated 17 * 19 = 323.\n\nBoth workers independently arrived at the same result."
+    }
+  ]
+}

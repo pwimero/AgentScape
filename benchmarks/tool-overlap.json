@@ -1,0 +1,40 @@
+[
+  {
+    "mode": "sequential",
+    "status": "completed",
+    "wall_seconds": 12.301,
+    "intervals": [
+      [
+        2.124,
+        4.175,
+        "one"
+      ],
+      [
+        7.55,
+        9.628,
+        "two"
+      ]
+    ],
+    "overlap_seconds": 0,
+    "run_id": "20261010-032647-bada52"
+  },
+  {
+    "mode": "parallel",
+    "status": "completed",
+    "wall_seconds": 7.045,
+    "intervals": [
+      [
+        0.971,
+        3.064,
+        "one"
+      ],
+      [
+        2.231,
+        4.261,
+        "two"
+      ]
+    ],
+    "overlap_seconds": 0.833,
+    "run_id": "20261010-032700-e803f6"
+  }
+]
