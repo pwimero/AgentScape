@@ -25,7 +25,7 @@ export PATH="$HOME/.local/bin:$PATH"
 agentscape
 ```
 
-Or run `./agentscape.sh` from this folder. On a fresh installation, run `./setup.sh` once. It creates a project virtual environment, installs the CLI, places a launcher in `~/.local/bin`, and adds that directory to the shell PATH if needed. Python 3.11+ and a running Ollama server are required.
+Or run `./agentscape.sh` from this folder. On a fresh installation, run `./setup.sh` once. It creates a project virtual environment, installs the CLI, places a launcher in `~/.local/bin`, and adds that directory to the shell PATH if needed. Python 3.11.5+ and a running Ollama server are required.
 
 ## Configure your team
 
