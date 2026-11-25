@@ -2,9 +2,9 @@
 set -eu
 AGENTSCAPE_ROOT=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 cd "$AGENTSCAPE_ROOT"
-command -v python3 >/dev/null || { printf 'Install Python 3.11+ first.\n'; exit 1; }
+command -v python3 >/dev/null || { printf 'Install Python 3.11.5+ first.\n'; exit 1; }
 command -v ollama >/dev/null || { printf 'Install Ollama first: https://ollama.com\n'; exit 1; }
-python3 -c 'import sys; assert sys.version_info >= (3, 11), "Python 3.11+ required"'
+python3 -c 'import sys; assert sys.version_info >= (3, 11, 5), "Python 3.11.5+ required"'
 if [ ! -d .venv ]; then python3 -m venv .venv; fi
 .venv/bin/python -m pip install --disable-pip-version-check -e . -c requirements.lock
 chmod +x agentscape.sh
